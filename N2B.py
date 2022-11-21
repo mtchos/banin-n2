@@ -139,25 +139,24 @@ def VerificaSenha(tipo, senha):
             return False
 
 
-
-
-
 # PARTE 4 - Implementar função em código que apresente programa para usuário
 
-# verificar o tipo e repetir enquanto não for válido
-tipo = input("Informe o tipo: ")
+# pedir o tamanho e repetir enquanto não for válido
 tamanho = int(input("Informe o tamanho: "))
 while tamanho <= 3:
     print("Valor inválido para tamanho, precisa ser maior ou igual a 4")
     tamanho = int(input("Informe o tamanho: "))
+
+# pedir o tipo e repetir enquanto não for válido
 tipoValido = False
+tipo = input("Informe o tipo: ")
 while not tipoValido:
     if tipo == 'a' or tipo == 'b' or tipo == 'c' or tipo == 'd' or tipo == 'e':
         tipoValido = True
     else:
         print("Valor inválido para tipo de senha!")
         print("Precisa ser a, b, c, d ou e")
-        tipo = str(input("Digite novamente: "))
+        tipo = input("Digite novamente: ")
 
 
 entrada = open("MATR.txt", "r")
