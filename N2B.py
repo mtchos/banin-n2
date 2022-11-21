@@ -143,9 +143,6 @@ def VerificaSenha(tipo, senha):
 
 # pedir o tamanho e repetir enquanto não for válido
 tamanho = int(input("Informe o tamanho: "))
-while tamanho <= 3:
-    print("Valor inválido para tamanho, precisa ser maior ou igual a 4")
-    tamanho = int(input("Informe o tamanho: "))
 
 # pedir o tipo e repetir enquanto não for válido
 tipoValido = False
