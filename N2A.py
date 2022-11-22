@@ -7,12 +7,14 @@ print("Vinicius Esposito Cava")
 # PARTE 1 - abrir arquivo e organizar em listas
 arquivo = open("vendas.txt")
 
-# declarar lista de produtos, contendo três listas internas, na ordem:
+# declarar lista de produtos, contendo uma linha pra cada venda:
 # indice 0 -> codigos de produto
 # indice 1 -> quantidade de produto
 # indice 2 -> preço unitário de cada produto
 produtos = []
 
+# com o arquivo aberto, cada linha é separada pelo ';'
+# e convertendo cada valor para o seu tipo correto
 for linha in arquivo:
     registro = linha.split(sep=";")
     codigo = int(registro[0])
@@ -29,7 +31,8 @@ for produto in produtos:
 
 print(f"O total geral vendido é R$ {total:.2f}\n\n")
 
-# PARTE 3
+# PARTE 3 - interativo: usuário insere código do produto e o programa
+#           retorna se é válido e o total de vendas deste produto
 codigo = 1
 while codigo != 0:
     codigo = int(input("Digite o código: "))
