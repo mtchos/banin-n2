@@ -4,19 +4,9 @@ print("Matheus Silva e Sousa")
 print("Tomás Carrera Massabki")
 print("Vinicius Esposito Cava")
 
-from random import randint
+import random
 
-# PARTE 1 - Gerar arquivo de entrada, chamado MATR.TXT, contendo N números de matrícula
-# no formato de 6 dígitos, gerados em sequência por laço for
-
-# arquivo = open("MATR.txt", "w")
-
-# for i in range(222000, 223000):
-#    arquivo.write(f'{str(i)}\n')
-
-#arquivo.close()
-
-# PARTE 2 - Receber argumentos para função de geração da senha (tipo de senha e tamanho):
+# PARTE 1 - Receber argumentos para função de geração da senha (tipo de senha e tamanho):
 # Numérica -> 'a' = apenas algarismos
 # Alfabética -> 'b' = apenas letras maiúsculas e minúsculas
 # Alfanumérica 1 -> 'c' = apenas letras maiúsculas e algarismos
@@ -36,110 +26,55 @@ algarismos = []
 for i in range(48,58):
     algarismos.append(chr(i))
 
-ltr_maiuscula = []
+letraMaiuscula = []
 for i in range(65,91):
-    ltr_maiuscula.append(chr(i))
+    letraMaiuscula.append(chr(i))
 
-ltr_minuscula = []
+letraMinuscula = []
 for i in range(97, 123):
-    ltr_minuscula.append(chr(i))
+    letraMinuscula.append(chr(i))
 
 especiais = [45, 95, 58, 64, 35, 36, 38, 63]
 for i in range(len(especiais)):
     especiais[i] = chr(especiais[i])
 
 
-# PARTE 3 - Definir função que gera senha
-def GeraSenha(tipo, Tam):
+# PARTE 2 - Definir função que gera senha
+def GeraSenha(tipo, tamanho):
+    # a depender do tipo de senha, coloca os respectivos grupos
+    # de caracter dentro uma lista maior (escopo)
+    escopo = []
     if tipo == 'a':
-        escopo = algarismos
+        escopo = [algarismos]
     elif tipo == 'b':
-        escopo = ltr_maiuscula + ltr_minuscula
+        escopo = [letraMaiuscula, letraMinuscula]
     elif tipo == 'c':
-        escopo = algarismos + ltr_maiuscula
+        escopo = [algarismos, letraMaiuscula]
     elif tipo == 'd':
-        escopo = algarismos + ltr_maiuscula + ltr_minuscula
+        escopo = [algarismos, letraMaiuscula, letraMinuscula]
     elif tipo == 'e':
-        escopo = algarismos + ltr_maiuscula + ltr_minuscula + especiais
+        escopo = [algarismos, letraMaiuscula, letraMinuscula, especiais]
+    # para garantir a variedade da posição dos tipos, embaralha a
+    # lista de escopo com o shuffle
+    random.shuffle(escopo)
+    # define o valor de caracteres que ainda faltam a ser incrementados
+    # na senha
+    tamanhoRestante = tamanho
     senha = ""
-    # primeiro ciclo de geração da senha
-    for i in range(Tam):
-       digit = escopo[randint(0,len(escopo)-1)]
-       senha = senha + digit
+    # loop for que garante a presença de ao menos um caracter de cada 
+    # tipo do escopo usando choice como fator de aleatoriedade e decrementa
+    # o tamanho restante a ser usado no próximo loop for
+    for tipo in escopo:
+        senha += random.choice(tipo)
+        tamanhoRestante -= 1
+    # após garantir que existe um caracter de cada tipo na senha, completa
+    # ela com caracteres de um tipo aleatório
+    for i in range(tamanhoRestante):
+       tipo = random.choice(escopo)
+       senha += random.choice(tipo)
     return senha
 
-def VerificaSenha(tipo, senha):
-    if tipo == 'a':
-        return True
-    elif tipo == 'b':
-        temMaiuscula = False
-        temMinuscula = False
-        for i in range(len(senha)):
-            if senha[i] in ltr_maiuscula:
-                temMaiuscula = True
-            else:
-                temMinuscula = True
-            if temMaiuscula and temMinuscula:
-                return True
-        if temMaiuscula and temMinuscula:
-            return True
-        else:
-            return False
-    elif tipo == 'c':
-        temAlgarismo = False
-        temMaiuscula = False
-        for i in range(len(senha)):
-            if senha[i] in algarismos:
-                temAlgarismo = True
-            else:
-                temMaiuscula = True
-            if temAlgarismo and temMaiuscula:
-                return True
-        if temAlgarismo and temMaiuscula:
-            return True
-        else:
-            return False
-
-    elif tipo == 'd':
-        temAlgarismo = False
-        temMaiuscula = False
-        temMinuscula = False
-        for i in range(len(senha)):
-            if senha[i] in ltr_maiuscula:
-                temMaiuscula = True
-            elif senha[i] in ltr_minuscula:
-                temMinuscula = True
-            else:
-                temAlgarismo = True
-            if temMaiuscula and temMinuscula and temAlgarismo:
-                return True
-        if temMaiuscula and temMinuscula and temAlgarismo:
-            return True
-        else:
-            return False
-    elif tipo == 'e':
-        temAlgarismo = False
-        temMaiuscula = False
-        temMinuscula = False
-        temEspecial = False
-        for i in range(len(senha)):
-            if senha[i] in algarismos:
-                temAlgarismo = True
-            elif senha[i] in ltr_maiuscula:
-                temMaiuscula = True
-            elif senha[i] in ltr_minuscula:
-                temMinuscula = True
-            else:
-                temEspecial = True
-            if temAlgarismo and temMaiuscula and temMinuscula and temEspecial:
-                return True
-        if temAlgarismo and temMaiuscula and temMinuscula and temEspecial:
-            return True
-        else:
-            return False
-
-
-# PARTE 4 - Implementar função em código que apresente programa para usuário
+# PARTE 3 - Implementar função em código que apresente programa para usuário
 
 # pedir o tamanho e repetir enquanto não for válido
 tamanho = int(input("Informe o tamanho: "))
@@ -161,10 +96,6 @@ saida = open("SENHA.txt", "w")
 
 for linha in entrada:
     senha = GeraSenha(tipo, tamanho)
-    senhaValida = VerificaSenha(tipo, senha)
-    while not senhaValida:
-        senha = GeraSenha(tipo, tamanho)
-        senhaValida = VerificaSenha(tipo, senha)
     linha = linha.split('\n')
     matricula = linha[0]
     saida.write("{};{};\n".format(matricula, senha))
